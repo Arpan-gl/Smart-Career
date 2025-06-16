@@ -1,6 +1,5 @@
 import { NextRequest,NextResponse } from "next/server";
 import { PrismaClient } from "@/prisma/generated/prisma";
-import { upload } from "@/lib/multer";
 import {PDFLoader} from "@langchain/community/document_loaders/fs/pdf";
 import { getAuth } from "@clerk/nextjs/server";
 import {analysisResumeAndGetATSScore,generateATSFriendlyResume} from "@/lib/analysis";
@@ -42,28 +41,11 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "User not authenticated" }, { status: 401 });
         }
     
-        // Save the file using multer (wrapped in a Promise)
-        // const filePath: string | undefined = await new Promise((resolve, reject) => {
-        //     upload.single("file")(req as any, {} as any, function (err: any) {
-        //         if (err) {
-        //             reject(err);
-        //         } else {
-        //             const uploadedFile = (req as any).file;
-        //             console.log(uploadedFile)
-        //             resolve(uploadedFile?.path);
-        //         }
-        //     });
-        // });
-        // if (!filePath) {
-        //     return NextResponse.json({ error: "File upload failed" }, { status: 500 });
-        // }
 
         const pdfLoader = new PDFLoader(filePath);
         const documents = await pdfLoader.load();
-        // console.log("Documents loaded:", documents);
         // Here you would implement your logic to analyze the file and generate the score
         const responseText = documents.map((doc) => doc.pageContent).join("\n");
-        // console.log("Response text:", responseText);
         const isExist = await prisma.resumeResponseByATS.findFirst({
             where:{
                 userId: userId,
@@ -99,7 +81,6 @@ export async function POST(req: NextRequest) {
             Explanation: JSON.stringify(responseAsScore.Explanation),
             ATSFriendlyResume: getAtsFriendlyResumeResponse.ATSFriendlyResume
         }
-        // console.log("Resume response:", resumeResponse);
         await prisma.resumeResponseByATS.create({
             data: {
                 userId,
