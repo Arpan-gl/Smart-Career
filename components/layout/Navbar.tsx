@@ -1,35 +1,41 @@
+"use client";
+
 import Link from "next/link";
-import { Github, Menu, } from "lucide-react";
+import { Brain, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import { checkUser } from "@/lib/checkUser";
 
-export async function Navbar() {
-  await checkUser();
+export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2">
-            <Github className="h-6 w-6" />
-            <span className="text-xl font-bold">GitAnalyzer AI</span>
+            <div className="h-8 w-8 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+              <Brain className="h-5 w-5 text-white" />
+            </div>
+            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+              Smart Career AI
+            </span>
           </Link>
         </div>
 
         {/* Desktop navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link href="/" className="text-sm font-medium transition-colors hover:text-primary">
+          <Link href="/Home" className="text-sm font-medium transition-colors hover:text-primary">
             Home
           </Link>
           <Link href="/analyze" className="text-sm font-medium transition-colors hover:text-primary">
-            Analyze Repo
+            Repository Analyzer
+          </Link>
+          <Link href="/resume-analyzer" className="text-sm font-medium transition-colors hover:text-primary">
+            Resume Optimizer
           </Link>
         </nav>
 
         <div className="flex items-center gap-2">
-
           <SignedOut>
             <SignInButton>
               <Button variant="outline">Sign In</Button>
@@ -62,7 +68,10 @@ export async function Navbar() {
                   Home
                 </Link>
                 <Link href="/analyze" className="text-lg font-medium transition-colors hover:text-primary">
-                  Analyze Repo
+                  Repository Analyzer
+                </Link>
+                <Link href="/resume-analyzer" className="text-lg font-medium transition-colors hover:text-primary">
+                  Resume Optimizer
                 </Link>
                 <SignedOut>
                   <SignInButton>

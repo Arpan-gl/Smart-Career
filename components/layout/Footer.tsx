@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Github, Twitter, Linkedin } from "lucide-react";
+import { Brain, Twitter, Linkedin, Mail } from "lucide-react";
 
 export function Footer() {
   return (
@@ -8,30 +8,39 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <Github className="h-5 w-5" />
-              <h3 className="font-bold">GitAnalyzer AI</h3>
+              <div className="h-6 w-6 rounded bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                <Brain className="h-4 w-4 text-white" />
+              </div>
+              <h3 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+                Smart Career AI
+              </h3>
             </div>
             <p className="text-sm text-muted-foreground">
-              Turn your GitHub repo into a professional project summary with just a few clicks.
+              AI-powered career enhancement platform that transforms your GitHub repositories and optimizes your resume for better job opportunities.
             </p>
           </div>
           
           <div>
-            <h4 className="text-sm font-semibold mb-3">Product</h4>
+            <h4 className="text-sm font-semibold mb-3">Features</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Features
+                <Link href="/analyze" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Repository Analyzer
+                </Link>
+              </li>
+              <li>
+                <Link href="/resume-analyzer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Resume Optimizer
                 </Link>
               </li>
               <li>
                 <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Pricing
+                  LinkedIn Generator
                 </Link>
               </li>
               <li>
                 <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Changelog
+                  ATS Analysis
                 </Link>
               </li>
             </ul>
@@ -47,7 +56,12 @@ export function Footer() {
               </li>
               <li>
                 <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  Blog
+                  Career Tips Blog
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Success Stories
                 </Link>
               </li>
               <li>
@@ -63,7 +77,12 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                  About
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Contact
                 </Link>
               </li>
               <li>
@@ -82,7 +101,7 @@ export function Footer() {
         
         <div className="flex flex-col sm:flex-row items-center justify-between mt-8 pt-8 border-t">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} GitAnalyzer AI. All rights reserved.
+            © {new Date().getFullYear()} Smart Career AI. All rights reserved.
           </p>
           <div className="flex items-center gap-4 mt-4 sm:mt-0">
             <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -90,12 +109,12 @@ export function Footer() {
               <span className="sr-only">Twitter</span>
             </Link>
             <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
-              <Github className="h-5 w-5" />
-              <span className="sr-only">GitHub</span>
-            </Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
               <Linkedin className="h-5 w-5" />
               <span className="sr-only">LinkedIn</span>
+            </Link>
+            <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Mail className="h-5 w-5" />
+              <span className="sr-only">Email</span>
             </Link>
           </div>
         </div>

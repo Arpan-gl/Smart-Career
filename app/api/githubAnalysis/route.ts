@@ -1,7 +1,7 @@
 import { NextRequest,NextResponse } from "next/server";
 import  gitHubAnalysis from "@/lib/fetchRepo";
 import { PrismaClient } from "@/prisma/generated/prisma";
-import analysisGitHubResponse from "@/lib/analysis";
+import {analysisGitHubResponse} from "@/lib/analysis";
 import { getAuth } from "@clerk/nextjs/server";
 
 const prisma = new PrismaClient();

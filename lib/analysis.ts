@@ -10,6 +10,7 @@ interface Commit {
 }
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 const analysisGitHubResponse = async ({ package_json, commits, project_name, owner }: { package_json: ProjectFiles, commits: Commit[], project_name: string, owner: string }) => {
     try {
@@ -45,9 +46,6 @@ Output your response as a JSON object in the following format:
 Do not output a template. Base your response only on the provided data.
             `;
 
-        // Initialize the model
-        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-
         // Generate the response
         const result = await model.generateContent({
             contents: [{ role: "user", parts: [{ text: prompt }] }]
@@ -70,4 +68,94 @@ Do not output a template. Base your response only on the provided data.
     }
 }
 
-export default analysisGitHubResponse;
+const analysisResumeAndGetATSScore = async ({ atsFriendlyResumeResponse, fieldMatch }: { atsFriendlyResumeResponse: string, fieldMatch: string }) => {
+    try {
+        const prompt = `
+        You are an expert ATS score generator.
+
+Given:
+- ATS-friendly resume response: ${atsFriendlyResumeResponse}
+- Job description field match: ${fieldMatch}
+
+Your tasks:
+1. Analyze the ATS-friendly resume response to extract relevant information about the candidate's skills, experience, and education.
+2. Compare this extracted information with the job description field match to assess the candidate's fit for the role.
+3. Generate an ATS score based on the comparison, considering the candidate's qualifications and the job requirements.
+
+Output your response as a JSON object in the following format:
+{
+  "ATSScore": number,       // The ATS score
+  "Comparison": {            // A detailed comparison of the resume and job description
+    strengths: string[];
+    weaknesses: string[];
+    recommendations: string[];
+  },
+  "Explanation": {          // Why the ATS score was generated (for example, based on skill matches)
+    overview: string;
+    keyIssues: string[];
+    improvements: string[];
+  }     
+}
+        `;
+        // Generate the response
+        const result = await model.generateContent({
+            contents: [{ role: "user", parts: [{ text: prompt }] }]
+        });
+
+        const responseText = result.response.text();
+
+        const jsonMatch = responseText.match(/```json\n([\s\S]*?)\n```/) ||
+            responseText.match(/{[\s\S]*}/);
+
+        if (jsonMatch) {
+            return JSON.parse(jsonMatch[1] || jsonMatch[0]);
+        }
+
+        throw new Error("Failed to parse JSON response");
+
+    } catch (error) {
+        console.error("Error in analysisResumeAndGetATSScore:", error);
+        throw error;
+    }
+}
+
+const generateATSFriendlyResume = async ({ atsFriendlyResumeResponse, fieldMatch }: { atsFriendlyResumeResponse: string, fieldMatch: string }) => {
+    try {
+        const prompt = `
+        You are an expert ATS resume generator.
+
+Given:
+- ATS-friendly resume response: ${atsFriendlyResumeResponse}
+- Job description field match: ${fieldMatch}
+
+Your tasks:
+1. Analyze the ATS-friendly resume response to extract relevant information about the candidate's skills, experience, and education.
+2. Generate an ATS friendly resume based on the comparison, considering the candidate's qualifications and the job requirements.
+
+Output your response as a JSON object in the following format:
+{
+  "ATSFriendlyResume": string,       // The ATS friendly resume
+    }
+        `;
+        // Generate the response
+        const result = await model.generateContent({
+            contents: [{ role: "user", parts: [{ text: prompt }] }]
+        });
+
+        const responseText = result.response.text();
+
+        const jsonMatch = responseText.match(/```json\n([\s\S]*?)\n```/) ||
+            responseText.match(/{[\s\S]*}/);
+
+        if (jsonMatch) {
+            return JSON.parse(jsonMatch[1] || jsonMatch[0]);
+        }
+
+        throw new Error("Failed to parse JSON response");
+    } catch (error) {
+        console.error("Error in generateATSFriendlyResume:", error);
+        throw error;
+    }
+}
+
+export { analysisResumeAndGetATSScore, analysisGitHubResponse, generateATSFriendlyResume };
