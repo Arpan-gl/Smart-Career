@@ -266,18 +266,19 @@ const generatePerformanceAnalysis = async ({questionList,answers}:{questionList:
         - Strengths and areas for improvement
         - Detailed feedback for each question and answer pair, including score and feedback
         4. The analysis should be comprehensive, providing insights into the candidate's suitability for the role based on their responses.
+        5. Also do for beginner friendly, so the candidate can understand the feedback and improve in the future. Also give some better result if they answer all the questions.
         Output your response as a JSON object in the following format:
         {
-            overallScore: number,
-            categories: {
+            overallScore: number,   // Overall score out of 100
+            categories: {   // Scores for each category
                 communication: number,
                 technical: number,
                 confidence: number,
                 clarity: number
             },
-            strengths: string[],
-            improvements: string[],
-            detailedFeedback: [
+            strengths: string[],   // List of strengths identified in the candidate's performance
+            improvements: string[],  // List of areas for improvement
+            detailedFeedback: [    // Array of objects containing detailed feedback for each question and answer pair
                 {
                     question: string,
                     response: string,

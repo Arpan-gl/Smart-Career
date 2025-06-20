@@ -45,7 +45,9 @@ export async function POST(req:NextRequest) {
             return NextResponse.json({ message: "Mock interview not found" }, { status: 404 });
         }
 
-        const questionList = interviewDetails.questions.map((q) => JSON.parse(q).question);
+        const allQuestionList = interviewDetails.questions.map((q) => JSON.parse(q).question);
+        const size = allQuestionList.length;
+        const questionList = allQuestionList.slice(0, size - 1); // Exclude the last question which is the final session question
         const answers = interviewDetails.answers;
         
         const getPerformanceResult:PerformanceAnalysis = await generatePerformanceAnalysis({questionList,answers});
