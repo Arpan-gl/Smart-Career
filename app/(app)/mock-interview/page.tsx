@@ -284,6 +284,7 @@ export default function MockInterviewPage() {
       setCurrentResponse("");
       stopListening();
       endInterview(session);
+      setStep('results');
       return;
     }
 
