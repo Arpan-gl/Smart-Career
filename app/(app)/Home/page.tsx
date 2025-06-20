@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, FileCode, GitBranch, Linkedin, FileText, Upload, Brain, Target, Zap, Shield, CheckCircle, Star, TrendingUp } from "lucide-react";
+import { ArrowRight, FileCode, GitBranch, Linkedin, FileText, Upload, Brain, Target, Zap, Shield, CheckCircle, Star, Users, TrendingUp, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export default function Home() {
@@ -32,7 +32,7 @@ export default function Home() {
                   </span>
                 </h1>
                 <p className="text-xl text-muted-foreground leading-relaxed">
-                  Transform your GitHub repositories into professional documentation and optimize your resume with cutting-edge AI technology. Boost your career prospects with intelligent analysis and optimization.
+                  Transform your GitHub repositories into professional documentation, optimize your resume with cutting-edge AI technology, and practice interviews with our AI interviewer. Boost your career prospects with intelligent analysis and optimization.
                 </p>
               </div>
               
@@ -47,6 +47,12 @@ export default function Home() {
                   <Link href="/resume-analyzer">
                     <Upload className="mr-2 h-5 w-5" />
                     Optimize Resume
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="font-semibold">
+                  <Link href="/mock-interview">
+                    <Mic className="mr-2 h-5 w-5" />
+                    Practice Interview
                   </Link>
                 </Button>
               </div>
@@ -127,11 +133,11 @@ export default function Home() {
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600"> Accelerate Your Career</span>
             </h2>
             <p className="text-lg text-muted-foreground">
-              Our comprehensive AI-powered platform provides all the tools you need to showcase your projects professionally and optimize your job applications for maximum impact.
+              Our comprehensive AI-powered platform provides all the tools you need to showcase your projects professionally, optimize your job applications, and ace your interviews.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
             <Card className="relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20">
               <CardHeader className="pb-4">
                 <div className="h-12 w-12 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center mb-4">
@@ -239,6 +245,34 @@ export default function Home() {
                   <li className="flex items-center gap-2">
                     <CheckCircle className="h-4 w-4 text-green-500" />
                     Optimized resume download
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+
+            <Card className="relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950/20 dark:to-blue-950/20">
+              <CardHeader className="pb-4">
+                <div className="h-12 w-12 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center mb-4">
+                  <Mic className="h-6 w-6 text-white" />
+                </div>
+                <CardTitle className="text-xl">AI Mock Interview</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-4">
+                  Practice your interview skills with our AI-powered mock interview system. Get real-time voice interaction and detailed performance analysis.
+                </p>
+                <ul className="space-y-2 text-sm">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    Voice interaction
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    Customized questions
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    Performance analysis
                   </li>
                 </ul>
               </CardContent>
@@ -387,6 +421,12 @@ export default function Home() {
                 <Link href="/resume-analyzer">
                   <Upload className="mr-2 h-5 w-5" />
                   Optimize My Resume
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="font-semibold border-white text-white hover:bg-white hover:text-blue-600">
+                <Link href="/mock-interview">
+                  <Mic className="mr-2 h-5 w-5" />
+                  Practice Interview
                 </Link>
               </Button>
             </div>

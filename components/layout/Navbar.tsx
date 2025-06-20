@@ -24,7 +24,7 @@ export function Navbar() {
 
         {/* Desktop navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link href="/Home" className="text-sm font-medium transition-colors hover:text-primary">
+          <Link href="/" className="text-sm font-medium transition-colors hover:text-primary">
             Home
           </Link>
           <Link href="/analyze" className="text-sm font-medium transition-colors hover:text-primary">
@@ -32,6 +32,9 @@ export function Navbar() {
           </Link>
           <Link href="/resume-analyzer" className="text-sm font-medium transition-colors hover:text-primary">
             Resume Optimizer
+          </Link>
+          <Link href="/mock-interview" className="text-sm font-medium transition-colors hover:text-primary">
+            Mock Interview
           </Link>
         </nav>
 
@@ -72,6 +75,9 @@ export function Navbar() {
                 </Link>
                 <Link href="/resume-analyzer" className="text-lg font-medium transition-colors hover:text-primary">
                   Resume Optimizer
+                </Link>
+                <Link href="/mock-interview" className="text-lg font-medium transition-colors hover:text-primary">
+                  Mock Interview
                 </Link>
                 <SignedOut>
                   <SignInButton>

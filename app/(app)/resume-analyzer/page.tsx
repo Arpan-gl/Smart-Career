@@ -107,21 +107,21 @@ export default function ResumeAnalyzerPage() {
     }
   }
 
-  const handleDownload = (content: string, filename: string) => {
-    const blob = new Blob([content], { type: "text/plain" });
+  const handleDownload = async (content: string) => {
+    const res = await fetch("/api/download-optimized-resume", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ optimizedResume: content }),
+    });
+    const blob = await res.blob();
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = filename;
+    a.download = "Optimized_Resume.docx";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-
-    toast({
-      title: "Download started",
-      description: `${filename} has been downloaded.`,
-    });
   };
 
   const removeFile = () => {
@@ -401,7 +401,7 @@ export default function ResumeAnalyzerPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => handleDownload(analysisResult.optimizedResume!, "Optimized_Resume")}
+                      onClick={() => handleDownload(analysisResult.optimizedResume!)}
                     >
                       <Download className="h-4 w-4 mr-1" /> Download
                     </Button>

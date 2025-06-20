@@ -16,7 +16,7 @@ export function Footer() {
               </h3>
             </div>
             <p className="text-sm text-muted-foreground">
-              AI-powered career enhancement platform that transforms your GitHub repositories and optimizes your resume for better job opportunities.
+              AI-powered career enhancement platform that transforms your GitHub repositories, optimizes your resume, and helps you practice interviews for better job opportunities.
             </p>
           </div>
           
@@ -31,6 +31,11 @@ export function Footer() {
               <li>
                 <Link href="/resume-analyzer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   Resume Optimizer
+                </Link>
+              </li>
+              <li>
+                <Link href="/mock-interview" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Mock Interview
                 </Link>
               </li>
               <li>

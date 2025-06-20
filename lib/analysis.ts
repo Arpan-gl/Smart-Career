@@ -158,4 +158,155 @@ Output your response as a JSON object in the following format:
     }
 }
 
-export { analysisResumeAndGetATSScore, analysisGitHubResponse, generateATSFriendlyResume };
+const generateFirstQuestion = async ({ fieldName, resumeText, experience, jobDescription }: { fieldName: string, resumeText: string, experience: string, jobDescription: string }) => {
+    try {
+        const prompt = `
+        You are an expert interview question generator.
+Given:
+- Field name: ${fieldName}
+- Resume text: ${resumeText}
+- Experience: ${experience}
+- Job description: ${jobDescription}
+Your tasks:
+1. Analyze the resume text to understand the candidate's skills, experience, and qualifications.
+2. Based on the field name and job description, generate a relevant first question for the interview that assesses the candidate's fit for the role.
+3. Interview question should be open-ended, allowing the candidate to demonstrate their knowledge and experience.
+4. Interview question should also include friendly follow-up questions to keep the conversation going.
+Output your response as a JSON object in the following format:
+{
+    "question": string       // The generated first question for the interview
+    "expectedDuration": Number // The expected duration for the answer
+    "category": string          // The category of the question
+}`;
+
+        // Generate the response
+        const result = await model.generateContent({
+            contents: [{ role: "user", parts: [{ text: prompt }] }]
+        });
+
+        const responseText = result.response.text();
+
+        const jsonMatch = responseText.match(/```json\n([\s\S]*?)\n```/) ||
+            responseText.match(/{[\s\S]*}/);
+
+        if (jsonMatch) {
+            return JSON.parse(jsonMatch[1] || jsonMatch[0]);
+        }
+
+        throw new Error("Failed to parse JSON response");
+    } catch (error) {
+        console.error("Error in generateFirstQuestion:", error);
+        throw error;
+    }
+}
+
+const generateNextQuestion = async ({ lastQuestion, answer, numberOfQuestions }: { lastQuestion: string, answer: string, numberOfQuestions: number }) => {
+    try {
+        const prompt = `
+You are an expert interview question generator and evaluator.
+
+Given:
+- Last question: ${lastQuestion}
+- Answer: ${answer}   // most recent answer from the user.
+- Number of questions asked so far out of 6: ${numberOfQuestions}
+
+Your tasks:
+1. Analyze the last question, answer to understand the candidate’s communication, skills, and relevance to the role.
+2. Based on the analysis, either:
+    a. Generate a relevant and meaningful next question for the interview that evaluates the candidate further,
+    OR
+    b. If you determine the interview has reached a logical conclusion (e.g., all critical topics have been covered, or candidate is clearly unfit or highly suitable), respond with a message: "OK, you may leave the call now."
+3. Interview question should be open-ended, allowing the candidate to demonstrate their knowledge and experience.
+4. Interview question should also include friendly follow-up questions to keep the conversation going.
+
+Output your response as a JSON object in the following format:
+
+If you are continuing the interview:
+{
+    "question": string,         // The next question for the interview
+    "expectedDuration": number, // Expected time (in minutes) for answering
+    "category": string          // The category of the question (e.g., Technical, Behavioral, Communication)
+}
+`;
+
+        // Generate the response
+        const result = await model.generateContent({
+            contents: [{ role: "user", parts: [{ text: prompt }] }]
+        });
+
+        const responseText = result.response.text();
+
+        const jsonMatch = responseText.match(/```json\n([\s\S]*?)\n```/) ||
+            responseText.match(/{[\s\S]*}/);
+
+        if (jsonMatch) {
+            return JSON.parse(jsonMatch[1] || jsonMatch[0]);
+        }
+
+        throw new Error("Failed to parse JSON response");
+    } catch (error) {
+        console.error("Error in generate new question", error);
+        throw error;
+    }
+}
+
+const generatePerformanceAnalysis = async ({questionList,answers}:{questionList:string[],answers:string[]}) => {
+    try {
+        const prompt = `
+        You are an expert performance analysis AI.
+        Given:
+        - A list of questions asked during the interview: ${JSON.stringify(questionList)}
+        - A list of answers provided by the candidate: ${JSON.stringify(answers)}
+        Your tasks:
+        1. Analyze the answers in relation to the questions to assess the candidate's performance.
+        2. Evaluate the candidate's communication skills, technical knowledge, confidence, and clarity.
+        3. Generate a detailed performance analysis report that includes:
+        - Overall score (out of 100)
+        - Scores for each category (communication, technical, confidence, clarity)
+        - Strengths and areas for improvement
+        - Detailed feedback for each question and answer pair, including score and feedback
+        4. The analysis should be comprehensive, providing insights into the candidate's suitability for the role based on their responses.
+        Output your response as a JSON object in the following format:
+        {
+            overallScore: number,
+            categories: {
+                communication: number,
+                technical: number,
+                confidence: number,
+                clarity: number
+            },
+            strengths: string[],
+            improvements: string[],
+            detailedFeedback: [
+                {
+                    question: string,
+                    response: string,
+                    score: number,
+                    feedback: string
+                }   
+            ]
+        }
+`;
+
+        // Generate the response
+        const result = await model.generateContent({
+            contents: [{ role: "user", parts: [{ text: prompt }] }]
+        });
+
+        const responseText = result.response.text();
+
+        const jsonMatch = responseText.match(/```json\n([\s\S]*?)\n```/) ||
+            responseText.match(/{[\s\S]*}/);
+
+        if (jsonMatch) {
+            return JSON.parse(jsonMatch[1] || jsonMatch[0]);
+        }
+
+        throw new Error("Failed to parse JSON response");
+    } catch (error) {
+        console.error("Error to geneate the analysis of preformance",error);
+        throw error;
+    }
+}
+
+export { analysisResumeAndGetATSScore, analysisGitHubResponse, generateATSFriendlyResume, generateFirstQuestion , generateNextQuestion, generatePerformanceAnalysis };
