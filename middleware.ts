@@ -1,6 +1,5 @@
 import { clerkMiddleware,createRouteMatcher } from '@clerk/nextjs/server';
-import { NextRequest, NextResponse } from 'next/server';
-import { upload } from './lib/multer';
+import { NextResponse } from 'next/server';
 
 const isPublicRoute = createRouteMatcher([
     "/sign-in",
