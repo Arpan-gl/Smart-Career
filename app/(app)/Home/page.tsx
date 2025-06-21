@@ -1,8 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, FileCode, GitBranch, Linkedin, FileText, Upload, Brain, Target, Zap, Shield, CheckCircle, Star, Users, TrendingUp, Mic } from "lucide-react";
+import { FileCode, GitBranch, Linkedin, FileText, Upload, Brain, Target, Zap, Shield, CheckCircle, Star, TrendingUp, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export default function Home() {

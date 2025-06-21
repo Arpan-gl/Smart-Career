@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from "react";
 import { Mic, MicOff, Upload, FileText, User, Volume2, VolumeX, Video, VideoOff, PhoneOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-// import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
@@ -64,19 +63,16 @@ export default function MockInterviewPage() {
 
   // Interview state
   const [session, setSession] = useState<InterviewSession | null>(null);
-  const [isRecording, setIsRecording] = useState(false);
   const [isAISpeaking, setIsAISpeaking] = useState(false);
   const [currentResponse, setCurrentResponse] = useState("");
-  const [interviewStarted, setInterviewStarted] = useState(false);
   const [performanceAnalysis, setPerformanceAnalysis] = useState<PerformanceAnalysis | null>(null);
-  const [mockQuestions, setMockQuestions] = useState<InterviewQuestion[]>([]);
 
   // Audio state
   const [isListening, setIsListening] = useState(false);
-  const [transcript, setTranscript] = useState("");
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoOn, setIsVideoOn] = useState(true);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null);
   const synthRef = useRef<SpeechSynthesis | null>(null);
 
@@ -87,19 +83,21 @@ export default function MockInterviewPage() {
     return () => {
       stopAllAudio();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   // Initialize speech recognition and synthesis
   useEffect(() => {
     if (typeof window !== 'undefined') {
       // Speech Recognition
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       if (SpeechRecognition) {
         recognitionRef.current = new SpeechRecognition();
         recognitionRef.current.continuous = true;
         recognitionRef.current.interimResults = true;
         recognitionRef.current.lang = 'en-US';
-
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         recognitionRef.current.onresult = (event: any) => {
           let finalTranscript = '';
           for (let i = event.resultIndex; i < event.results.length; i++) {
@@ -109,10 +107,9 @@ export default function MockInterviewPage() {
           }
           if (finalTranscript) {
             setCurrentResponse(prev => prev + ' ' + finalTranscript);
-            setTranscript(finalTranscript);
           }
         };
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
         recognitionRef.current.onerror = (event: any) => {
           console.error('Speech recognition error:', event.error);
           setIsListening(false);
@@ -191,7 +188,6 @@ export default function MockInterviewPage() {
               expectedDuration: firstQuestion.expectedDuration
             }
           ];
-          setMockQuestions(mockQuestion);
           setFileContent(res.data.fileContent);
 
           // Start session after getting question
@@ -203,12 +199,10 @@ export default function MockInterviewPage() {
           };
           setSession(newSession);
           setStep('interview');
-          setInterviewStarted(true);
 
           // Start with first question
           setIsListening(false);
           setCurrentResponse("");
-          setTranscript("");
           //  Speak the first question after question come.
           setTimeout(() => {
             speakQuestion(mockQuestion[0].question);
@@ -263,7 +257,6 @@ export default function MockInterviewPage() {
   const stopListening = () => {
     if (recognitionRef.current && isListening) {
       setIsListening(false);
-      setTranscript("");
       recognitionRef.current.stop();
     }
   };
@@ -322,7 +315,6 @@ export default function MockInterviewPage() {
     };
 
     setSession(updatedSession);
-    setMockQuestions(updatedQuestions);
     setCurrentResponse("");
     stopListening();
 
@@ -372,7 +364,7 @@ export default function MockInterviewPage() {
     //   }))
     // };
     try {
-      await axios.post("/api/end-interview", { finalSession: completedSession,fileContent: fileContent })
+      await axios.post("/api/end-interview", { finalSession: completedSession, fileContent: fileContent })
         .then((res) => {
           const mockAnalysis: PerformanceAnalysis = res.data.data;
           if (!mockAnalysis) {
@@ -404,7 +396,6 @@ export default function MockInterviewPage() {
     if (recognitionRef.current && isListening) {
       recognitionRef.current.stop();
       setIsListening(false);
-      setTranscript("");
     }
     // Stop media recorder if used in future
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
@@ -418,7 +409,6 @@ export default function MockInterviewPage() {
     setSession(null);
     setPerformanceAnalysis(null);
     setCurrentResponse("");
-    setInterviewStarted(false);
     stopListening();
   };
 
@@ -594,10 +584,10 @@ export default function MockInterviewPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
             {/* AI Interviewer Panel (2/3) */}
             <div className="lg:col-span-2 relative flex flex-col gap-8">
-              <div className="aspect-video bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-gray-700 overflow-hidden relative">
+              <div className="aspect-video bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-gray-700 overflow-hidden relative h-42">
                 {/* AI Avatar/Icon */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                  <div className="w-28 h-28 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                     <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center">
                       <div className="flex gap-1">
                         <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
@@ -681,9 +671,9 @@ export default function MockInterviewPage() {
               </div>
 
               {/* Response Area */}
-              <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700 p-6 flex flex-col h-full">
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700 p-6 flex flex-col min-h-[120px]">
                 <h3 className="text-lg font-medium text-white mb-4">Your Response</h3>
-                <div className="min-h-[120px] p-4 bg-gray-900/50 rounded-xl border border-gray-600 mb-4 flex-1">
+                <div className="min-h-[90px] p-4 bg-gray-900/50 rounded-xl border border-gray-600 mb-4 flex-1">
                   {currentResponse ? (
                     <p className="text-gray-200">{currentResponse}</p>
                   ) : (
@@ -761,7 +751,7 @@ export default function MockInterviewPage() {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">Interview Performance Analysis</h1>
           <p className="text-lg text-muted-foreground">
-            Here's your detailed performance analysis with personalized feedback
+            Here&apos;s your detailed performance analysis with personalized feedback
           </p>
         </div>
 

@@ -8,11 +8,6 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "No resume content provided" }, { status: 400 });
         }
 
-        // Create the DOCX document
-        interface OptimizedResumeRequestBody {
-            optimizedResume: string;
-        }
-
         const doc: Document = new Document({
             sections: [
                 {
@@ -36,6 +31,7 @@ export async function POST(req: NextRequest) {
             },
         });
     } catch (error) {
+        console.error(error);
         return NextResponse.json({ error: "Failed to generate DOCX" }, { status: 500 });
     }
 }

@@ -223,7 +223,7 @@ export default function ResumeAnalyzerPage() {
 
               <div className="space-y-4">
                 <div className="text-sm text-muted-foreground">
-                  <h4 className="font-medium mb-2">What we'll analyze:</h4>
+                  <h4 className="font-medium mb-2">What we&apos;ll analyze:</h4>
                   <ul className="space-y-1 ml-4">
                     <li>• ATS compatibility score</li>
                     <li>• Resume field completeness</li>
