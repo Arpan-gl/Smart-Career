@@ -27,7 +27,7 @@ Your tasks:
 1. Analyze the package.json to determine the main libraries, frameworks, and tools used in the project. Summarize the tech stack and any notable dependencies.
 2. Review the commit history to infer the development process, key features, and project evolution.
 3. Using this analysis, generate:
-   - A professional README.md summary for the project (not a template, but a real summary tailored to the provided data)
+   - A professional github repository analysis summary for the project (not a template, but a real summary tailored to the provided data)
    - A LinkedIn post summary highlighting the project's purpose, tech stack, and achievements
    - A resume-ready bullet point list describing the project’s impact, technologies used, and your role as a contributor in a singlee overview.
 

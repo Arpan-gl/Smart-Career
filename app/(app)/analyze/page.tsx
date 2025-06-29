@@ -130,7 +130,7 @@ export default function AnalyzePage() {
       <div className="max-w-3xl mx-auto text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">Analyze Your GitHub Repository</h1>
         <p className="text-lg text-muted-foreground">
-          Enter your GitHub repository URL below to generate a professional README,
+          Enter your GitHub repository URL below to generate a professional Github summary,
           LinkedIn summary, and resume-ready project description.
         </p>
       </div>
@@ -226,7 +226,7 @@ export default function AnalyzePage() {
               <TabsList className="grid w-full grid-cols-3 mb-8">
                 <TabsTrigger value="readme" className="flex items-center gap-2">
                   <FileText className="h-4 w-4" />
-                  README.md
+                    GitHub Summary
                 </TabsTrigger>
                 <TabsTrigger value="linkedin" className="flex items-center gap-2">
                   <Linkedin className="h-4 w-4" />
@@ -242,9 +242,9 @@ export default function AnalyzePage() {
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between">
                     <div>
-                      <CardTitle>README.md</CardTitle>
+                      <CardTitle>GitHub Repository Summary</CardTitle>
                       <CardDescription>
-                        A professional README for your GitHub repository.
+                        A professional summary for your GitHub repository.
                       </CardDescription>
                     </div>
                     <div className="flex items-center gap-2">
@@ -259,13 +259,6 @@ export default function AnalyzePage() {
                           <Copy className="h-4 w-4 mr-1" />
                         )}
                         {copiedStates.readme ? "Copied!" : "Copy"}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleDownload(result?.GitHubAnalysis, "README.md")}
-                      >
-                        <Download className="h-4 w-4 mr-1" /> Download
                       </Button>
                     </div>
                   </CardHeader>
